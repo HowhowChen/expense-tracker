@@ -1,1 +1,71 @@
-32132
+<div class="container row">
+  <div class="col-sm-8 m-auto">
+    <form action="/search">
+      <div class="row">
+        <div class="col">
+          <select class="rounded bg-light form-select" name="category">
+            <option selected>全部</option>
+            {{#each categories}}
+              <option value="{{this.name}}" {{this.selected}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        
+        <div class="col">
+          <select class="rounded bg-light form-select" name="sort">
+          <option value="" selected>排序方式</option>
+          <option value="amountDesc" {{#if amountDesc}}selected{{/if}}>💰大->小</option>
+          <option value="amountAsc" {{#if amountAsc}}selected{{/if}}>💰小->大</option>
+          <option value="dateDesc" {{#if dateDesc}}selected{{/if}}>📆大->小</option>
+          <option value="dateAsc" {{#if dateAsc}}selected{{/if}}>📆小->大</option>
+        </select>
+        </div>
+        
+      </div>
+    </form>
+    
+
+    {{!-- total amount --}}
+  <p class="my-2 fs-5 mt-3">總金額 : </p>
+  <p class="fs-1 text-danger text-center">32132</p>
+  
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td class="col-1 align-middle fs-1 text-info"><i class="fa-solid fa-house"></i></td>
+          <td class="align-middle">
+            電影：驚奇隊長
+            <br>
+            2019/4/22
+          </td>
+          <td class="fw-bold align-middle">5000</td>
+          <td class="bg-white align-middle">
+            <a href="/records/{{this._id}}/edit" class="btn btn-success"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+          </td>
+          <td class="table-white align-middle">
+            <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+              <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash fs-5"></i></button>
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1 align-middle fs-1 text-info"><i class="fa-solid fa-house"></i></td>
+          <td>
+            電影：驚奇隊長
+            <br>
+            2019/4/22
+          </td>
+          <td class="fw-bold align-middle">5000</td>
+          <td class="bg-white align-middle">
+            <a href="/records/{{this._id}}/edit" class="btn btn-success"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+          </td>
+          <td class="table-white align-middle">
+            <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+              <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash fs-5"></i></button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

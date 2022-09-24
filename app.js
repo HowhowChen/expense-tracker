@@ -10,6 +10,9 @@ const port = 3000
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+//  setting static file
+app.use(express.static('public'))
+
 //  將requres 導入路由器
 app.use(routes)
 
