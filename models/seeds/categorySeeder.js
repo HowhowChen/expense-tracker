@@ -8,7 +8,8 @@ const db = require('../../config/mongoose')
 db.once('open', async () => {
   await Category.create(categoryJson)
     .then(() => {
-      console.log('done')
+      console.log('finish category seeds and db close')
+      db.close()
       process.exit()
     })
 })
