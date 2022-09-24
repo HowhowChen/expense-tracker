@@ -21,7 +21,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="name" class="col-3">名稱:</label>
           <div class="col-9">
-            <input id="name" name="name" type="text" class="form-control" value="{{ records.name }}" required>
+            <input id="name" name="name" type="text" class="form-control" value="{{ record.name }}" required>
               <div class="valid-feedback">Good!</div>
               <div class="invalid-feedback">This field is required</div>
             </div>
@@ -31,7 +31,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="date" class="col-3">日期:</label>
           <div class="col-9">
-            <input id="date" name="date" type="date" class="form-control" value="{{ records.date }}" required>
+            <input id="date" name="date" type="date" class="form-control" value="{{record.date}}" required>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
           </div>
@@ -40,7 +40,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="category" class="col-3">類別:</label>
           <div class="col-9">
-            <input id="category" name="category" list="categories" class="form-control" value="{{ records.category }}" required>
+            <input id="category" name="category" list="categories" class="form-control" value="{{ record.category_id.name }}" required>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
             <datalist id="categories">
@@ -54,9 +54,9 @@
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="money" class="col-3">金額:</label>
+          <label for="amount" class="col-3">金額:</label>
           <div class="col-9">
-            <input id="money" name="money" type="number" class="form-control" value="{{ records.money }}" required>
+            <input id="amount" name="amount" type="number" class="form-control" value="{{ record.amount }}" required>
           </div>
         </div>
 

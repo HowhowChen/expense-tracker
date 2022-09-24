@@ -27,44 +27,29 @@
 
     {{!-- total amount --}}
   <p class="my-2 fs-5 mt-3">總金額 : </p>
-  <p class="fs-1 text-danger text-center">$32132</p>
+  <p class="fs-1 text-danger text-center">${{ totalAmount }}</p>
   
     <table class="table table-striped">
       <tbody>
-        <tr>
-          <td class="col-1 align-middle fs-1 text-info"><i class="fa-solid fa-house"></i></td>
-          <td class="align-middle">
-            電影：驚奇隊長
-            <br>
-            2019/4/22
-          </td>
-          <td class="fw-bold align-middle">$5000</td>
-          <td class="bg-white align-middle">
-            <a href="/records/{{this._id}}/edit" class="btn btn-success"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
-          </td>
-          <td class="table-white align-middle">
-            <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
-              <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash fs-5"></i></button>
-            </form>
-          </td>
-        </tr>
-        <tr>
-          <td class="col-1 align-middle fs-1 text-info"><i class="fa-solid fa-house"></i></td>
-          <td>
-            電影：驚奇隊長
-            <br>
-            2019/4/22
-          </td>
-          <td class="fw-bold align-middle">$5000</td>
-          <td class="bg-white align-middle">
-            <a href="/records/{{this._id}}/edit" class="btn btn-success"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
-          </td>
-          <td class="table-white align-middle">
-            <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
-              <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash fs-5"></i></button>
-            </form>
-          </td>
-        </tr>
+        {{#each records}}
+          <tr>
+            <td class="col-1 align-middle fs-1 text-info"><i class="{{ this.category_id.icon }}"></i></td>
+            <td class="align-middle">
+              {{ this.name }}
+              <br>
+              {{ this.date }}
+            </td>
+            <td class="fw-bold align-middle">${{ this.amount }}</td>
+            <td class="bg-white align-middle">
+              <a href="/records/{{ this._id }}/edit" class="btn btn-success"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+            </td>
+            <td class="table-white align-middle">
+              <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+                <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash fs-5"></i></button>
+              </form>
+            </td>
+          </tr>
+        {{/each}}
       </tbody>
     </table>
   </div>
