@@ -1,7 +1,13 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')
+
+require('./config/mongoose')
 
 const app = express()
 const port = 3000
