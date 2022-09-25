@@ -45,8 +45,8 @@ router.put('/:id', async (req, res, next) => {
     const user_id = req.user._id
     const _id = req.params.id
     const { name, date, category, amount } = req.body
-    const categoryData = await Category.findOne({ name: category, user_id }).lean()
-    await Record.findOneAndUpdate({ _id }, { name, date, category_id: categoryData._id, amount })
+    const categoryData = await Category.findOne({ name: category }).lean()
+    await Record.findOneAndUpdate({ _id, user_id }, { name, date, category_id: categoryData._id, amount })
     res.redirect('/')
   } catch (e) {
     next(e)
