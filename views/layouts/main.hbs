@@ -19,7 +19,7 @@
       <div class="container">
           <a class="navbar-brand" href="/">
             <img src="/images/saving.png" width="30" height="30" class="d-inline-block align-top" alt="好。吃">
-            {{#if isAuthenticated}}{{user.name}}'s {{/if}}<span class="text-light">記帳本</span>
+            <span class="text-light">{{#if isAuthenticated}}{{user.name}}'s {{/if}}記帳本</span>
           </a>
           {{#if isAuthenticated}}
             <div class="d-flex">
