@@ -1,9 +1,9 @@
 <div class="container row">
   <div class="col-sm-8 m-auto">
-    <form action="/search">
+    <form action="/search" method="GET">
       <div class="row mt-5">
         <div class="col">
-          <select class="rounded bg-light form-select" name="category">
+          <select class="rounded bg-light form-select" name="category" onchange="form.submit()">
             <option selected>全部</option>
             {{#each categories}}
               <option value="{{this.name}}" {{this.selected}}>{{this.name}}</option>
@@ -12,12 +12,12 @@
         </div>
         
         <div class="col">
-          <select class="rounded bg-light form-select" name="sort">
+          <select class="rounded bg-light form-select" name="sort" onchange="form.submit()">
           <option value="" selected>排序方式</option>
-          <option value="amountDesc" {{#if amountDesc}}selected{{/if}}>💰大->小</option>
-          <option value="amountAsc" {{#if amountAsc}}selected{{/if}}>💰小->大</option>
-          <option value="dateDesc" {{#if dateDesc}}selected{{/if}}>📆大->小</option>
-          <option value="dateAsc" {{#if dateAsc}}selected{{/if}}>📆小->大</option>
+          <option value="amountDesc" {{#if sortObj.amountDesc}}selected{{/if}}>💰大->小</option>
+          <option value="amountAsc" {{#if sortObj.amountAsc}}selected{{/if}}>💰小->大</option>
+          <option value="dateDesc" {{#if sortObj.dateDesc}}selected{{/if}}>📆大->小</option>
+          <option value="dateAsc" {{#if sortObj.dateAsc}}selected{{/if}}>📆小->大</option>
         </select>
         </div>
         

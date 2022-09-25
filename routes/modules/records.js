@@ -17,7 +17,7 @@ router.post('/new', async (req, res, next) => {
     await Record.create({
       name,
       date,
-      category_id: categoryData,
+      category_id: categoryData._id,
       amount,
       user_id
     })
@@ -44,7 +44,7 @@ router.put('/:id', async (req, res, next) => {
   try {
     const _id = req.params.id
     const { name, date, category, amount } = req.body
-    const categoryData = await Category.findOne({name: category}).lean()
+    const categoryData = await Category.findOne({ name: category }).lean()
     await Record.findOneAndUpdate({ _id }, { name, date, category_id: categoryData._id, amount })
     res.redirect('/')
   } catch (e) {
