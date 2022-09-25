@@ -19,7 +19,7 @@
         </div>
         
         <div class="row align-items-center mb-5 h3">
-          <label for="name" class="col-3">名稱:</label>
+          <label for="name" class="col-3">名稱<span class="text-danger">*</span>:</label>
           <div class="col-9">
             <input id="name" name="name" type="text" class="form-control" placeholder="午餐" value="{{ records.name }}" required>
               <div class="valid-feedback">Good!</div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="date" class="col-3">日期:</label>
+          <label for="date" class="col-3">日期<span class="text-danger">*</span>:</label>
           <div class="col-9">
             <input id="date" name="date" type="date" class="form-control" value="{{ records.date }}" required>
             <div class="valid-feedback">Good!</div>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="category" class="col-3">類別:</label>
+          <label for="category" class="col-3">類別<span class="text-danger">*</span>:</label>
           <div class="col-9">
             <input id="category" name="category" list="categories" class="form-control" placeholder="餐飲食品" value="{{ records.category }}" required>
             <div class="valid-feedback">Good!</div>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="amount" class="col-3">金額:</label>
+          <label for="amount" class="col-3">金額<span class="text-danger">*</span>:</label>
           <div class="col-9">
             <input id="amount" name="amount" type="number" class="form-control" placeholder="3000"  value="{{ records.amount }}" required>
           </div>
