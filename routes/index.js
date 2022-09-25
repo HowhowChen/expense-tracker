@@ -3,10 +3,14 @@ const router = express.Router()
 const home = require('./modules/home')
 const records = require('./modules/records')
 const search = require('./modules/search')
+const users = require('./modules/users')
 
-router.use('/search', search)
-router.use('/records', records)
-router.use('/', home)
+const { authenticator } = require('../middleware/auth')
+
+router.use('/users', users)
+router.use('/search', authenticator, search)
+router.use('/records', authenticator, records)
+router.use('/', authenticator, home)
 
 //  get a 404 page
 router.get('*', (req, res) => {
