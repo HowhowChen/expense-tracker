@@ -7,15 +7,28 @@ router.get('/new', (req, res) => {
 })
 
 //  get edit record page
-router.get('/:id/edit', (req, res, next) => {
+router.get('/:id/edit', async (req, res, next) => {
   const _id = req.params.id
-  return Record.findOne({ _id })
-    .populate('category_id')
-    .lean()
-    .then(record => {
-      record.date = record.date.toISOString().slice(0, 10)  //  取前10位
-      res.render('edit', { record })
-    })
-    .catch(err => next(err))
+  try {
+    const record = await Record.findOne({ _id }).lean().populate('category_id').lean()
+    record.date = record.date.toISOString().slice(0, 10)  //  轉字串並取前10位
+    res.render('edit', { record })
+  } catch (e) {
+    next(e)
+  }
 })
+
 module.exports = router
+
+//  edit a record
+router.put('/:id', async (req, res, next) => {
+  try {
+    const _id = req.params.id
+    const { name, date, category, amount } = req.body
+    const categoryData = await Category.findOne({name: category}).lean()
+    await Record.findOneAndUpdate({ _id }, { name, date, category_id: categoryData._id, amount })
+    res.redirect('/')
+  } catch (e) {
+    next(e)
+  }
+})
