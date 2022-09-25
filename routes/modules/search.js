@@ -5,6 +5,7 @@ const Category = require('../../models/category')
 
 router.get('/', async (req, res, next) => {
   try {
+    const user_id = req.user._id
     const { category, sort } = req.query
     const searchOption = {}
     const sortOption = {}
@@ -35,11 +36,12 @@ router.get('/', async (req, res, next) => {
     //  according to category value, setting search option
     switch (category) {
       case '全部':
-        console.log('category equal all')
+        searchOption.user_id = user_id
         break
       default:
         const categoryData = await Category.findOne({ name: category }).lean()
         searchOption.category_id = categoryData._id
+        searchOption.user_id = user_id 
         break
     }
     
