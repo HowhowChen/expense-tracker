@@ -19,7 +19,6 @@ try {
     //  計算角度並以垂直軸為基準
     const rot1 = a1 * 180 / Math.PI + 90
     const rot2 = a2 * 180 / Math.PI + 90
-    console.log(rot1 , rot2) 
     
     //  更新左眼、右眼的值
     eye1.style.transform = `rotate(${rot1}deg)`
