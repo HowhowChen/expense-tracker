@@ -12,6 +12,15 @@ router.post('/new', async (req, res, next) => {
   try {
     const user_id = req.user._id
     const { name, date, category, amount } = req.body
+
+    //  prevent use post request ignore client limit 
+    if (!name || !date || !category || !amount) {
+      return next(e)
+    }
+    if (Number(amount) < 0) {
+      return next(e)
+    }
+
     const categoryData = await Category.findOne({ name: category }).lean()
     await Record.create({
       name,

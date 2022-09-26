@@ -56,7 +56,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="amount" class="col-3">金額<span class="text-danger">*</span>:</label>
           <div class="col-9">
-            <input id="amount" name="amount" type="number" class="form-control" placeholder="3000"  value="{{ records.amount }}" required>
+            <input id="amount" name="amount" type="number" class="form-control" placeholder="3000" min="0" value="{{ records.amount }}" required>
           </div>
         </div>
 
