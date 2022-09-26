@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
@@ -32,7 +31,7 @@ router.post('/', async (req, res, next) => {
     await sendResetPasswordEmail(user.name, email, link)
 
     req.flash('success_msg', '發送成功!')
-    res.render('forgot-password', { email })
+    res.redirect('/forgot-password')
   } catch (e) {
     next(e)
   }
@@ -54,5 +53,38 @@ router.get('/reset-password/:id/:token', async (req, res, next) => {
 })
 
 // reset password
+router.post('/reset-password/:id/:token', async (req, res, next) => {
+  try {
+    const { id, token } = req.params
+    const { password, confirmPassword } = req.body
+    
+    //  authenticate user
+    const user = await User.findById(id)
+    if (!user) return next(e)
+   
+    //  authenticate the token
+    const secret = JWT_SECRET + user.password
+    jwt.verify(token, secret)
+    
+    const errors = []
+    if (!password || !confirmPassword) {
+      errors.push({ message: '每一項都必填!' })
+    }
+    if (password !== confirmPassword) {
+      errors.push({ message: '密碼與確認密碼不相符!' })
+    }
+    if (errors.length) {
+      return res.render('reset-password', { errors, password, confirmPassword, id, token }) 
+    }
+ 
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    await user.updateOne({ password: hash })
+    req.flash('success_msg', '密碼修改成功!')
+    res.redirect('/users/login')
+  } catch (e) {
+    next(e)
+  }
+})
 
 module.exports = router
