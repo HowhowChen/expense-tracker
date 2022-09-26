@@ -40,16 +40,16 @@
         <div class="row align-items-center mb-5 h3">
           <label for="category" class="col-3">類別<span class="text-danger">*</span>:</label>
           <div class="col-9">
-            <input id="category" name="category" list="categories" class="form-control" placeholder="餐飲食品" value="{{ records.category }}" required>
-            <div class="valid-feedback">Good!</div>
-            <div class="invalid-feedback">This field is required</div>
-            <datalist id="categories">
+             <select id="category" name="category" list="categories" class="form-control"  value="{{ records.category }}" required>
+              <option ></option>
               <option>家居物業</option>
               <option>交通出行</option>
               <option>休閒娛樂</option>
               <option>餐飲食品</opiton>
               <option>其他</option>
-            </datalist>
+            </select>
+            <div class="valid-feedback">Good!</div>
+            <div class="invalid-feedback">This field is required</div>
           </div>
         </div>
 

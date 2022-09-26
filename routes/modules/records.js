@@ -40,9 +40,17 @@ router.get('/:id/edit', async (req, res, next) => {
   try {
     const user_id = req.user._id
     const _id = req.params.id
+    const categories = await Category.find().sort({ _id: 'asc' }).lean()
     const record = await Record.findOne({ _id, user_id }).lean().populate('category_id').lean()
+    //  add selected attribute
+    categories.map(categories => {
+      if (categories.name === record.category_id.name) {
+        categories.selected = 'selected'
+      }
+    })
+    
     record.date = record.date.toISOString().slice(0, 10)  //  轉字串並取前10位
-    res.render('edit', { record })
+    res.render('edit', { record, categories })
   } catch (e) {
     next(e)
   }
