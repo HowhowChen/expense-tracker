@@ -5,11 +5,13 @@ const records = require('./modules/records')
 const search = require('./modules/search')
 const users = require('./modules/users')
 const auth = require('./modules/auth')
+const forgotPassword = require('./modules/forgot-password')
 
 const { authenticator } = require('../middleware/auth')
 
 router.use('/users', users)
 router.use('/auth', auth)
+router.use('/forgot-password', forgotPassword)
 router.use('/search', authenticator, search)
 router.use('/records', authenticator, records)
 router.use('/', authenticator, home)
