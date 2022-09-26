@@ -38,4 +38,21 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+//  get a reset-password page
+router.get('/reset-password/:id/:token', async (req, res, next) => {
+  try {
+    const { id, token } = req.params
+    const user = await User.findById(id)
+    if (!user) return next(e)
+    //  authenticate the token
+    const secret = JWT_SECRET + user.password
+    jwt.verify(token, secret)
+    res.render('reset-password', { id, token })
+  } catch (e) {
+    next(e)
+  }
+})
+
+// reset password
+
 module.exports = router
