@@ -14,10 +14,17 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res, next) => {
   try {
     const { email } = req.body
+    
+    if (!email) {
+      req.flash('error', '必填選項!')
+      return res.redirect('/forgot-password')
+    }
+
     const user = await User.findOne({ email })
     if (!user) {
       req.flash('error', '帳戶不存在!')
-      res.render('forgot-password', { email })
+      req.flash('email', email)
+      return res.redirect('/forgot-password')
     }
     // create a one time link valid for 5 minutes
     const secret = JWT_SECRET + user.password
