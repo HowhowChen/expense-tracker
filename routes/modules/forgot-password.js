@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
 const JWT_SECRET = process.env.JWT_SECRET
-const sendResetPasswordEmail = require('../../helpers/email-helper')
+const sendResetPasswordEmail = require('../../helpers/email-helpers')
 
 // get a forgot-password page
 router.get('/', (req, res) => {

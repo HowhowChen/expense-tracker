@@ -21,6 +21,15 @@
           </select>
         </div>
         
+        <div class="col">
+          <select class="rounded bg-light form-select" name="limit" onchange="form.submit()">
+            <option value="" selected>顯示幾項</option>
+            <option value="3" {{#ifMatch pagination.limit 3}}selected{{/ifMatch}}>3</option>
+            <option value="5" {{#ifMatch pagination.limit 5}}selected{{/ifMatch}}>5</option>
+            <option value="10" {{#ifMatch pagination.limit 10}}selected{{/ifMatch}}>10</option>
+            <option value="20" {{#ifMatch pagination.limit 20}}selected{{/ifMatch}}>20</option>
+          </select>
+        </div>
       </div>
     </form>
     
@@ -28,7 +37,11 @@
     {{!-- total amount --}}
   <p class="my-2 fs-5 mt-3">總金額 : </p>
   <p class="fs-1 text-danger text-center">${{ totalAmount }}</p>
-  
+
+  <div class="text-primary text-secondary text-end mb-1">
+    頁數<span id="current-page">{{pagination.currentPage}}</span>/{{pagination.totalPage}}
+  </div>
+
     <table class="table table-striped">
       <tbody>
         {{#each records}}
@@ -53,4 +66,30 @@
       </tbody>
     </table>
   </div>
+  {{!-- pagination navbar --}}
+  {{#if pagination.pages}}
+    <nav class="mt-3 d-flex justify-content-center" aria-label="page navigation">
+      <ul class="pagination">
+        <li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
+          <a class="page-link" href="/search?page={{pagination.prev}}&category={{pagination.category}}&sort={{pagination.sort}}&limit={{pagination.limit}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{#each pagination.pages}}
+          {{#ifMatch this.page ../pagination.currentPage}}
+            <li class="page-item active"><a class="page-link" href="#">{{this.page}}</a></li>
+          {{else}}
+            <li class="page-item">
+              <a class="page-link" href="/search?page={{this.page}}&category={{../pagination.category}}&sort={{../pagination.sort}}&limit={{../pagination.limit}}">{{this.page}}</a>
+            </li>
+          {{/ifMatch}}
+        {{/each}}
+        <li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
+          <a class="page-link" href="/search?page={{pagination.next}}&category={{pagination.category}}&sort={{pagination.sort}}&limit={{pagination.limit}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  {{/if}}
 </div>

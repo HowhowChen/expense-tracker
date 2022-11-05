@@ -8,6 +8,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const errorHandler = require('./middleware/errorHandler').errorHandler
+const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const routes = require('./routes')
 
 // 載入設定檔，要寫在 express-session 以後
@@ -17,7 +18,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 // template engine: express-handlebars
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: handlebarsHelpers }))
 app.set('view engine', 'hbs')
 
 // middlewate: session
