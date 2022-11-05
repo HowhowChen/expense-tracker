@@ -21,4 +21,3 @@ function sendResetPasswordEmail (name, clientEmail, link) {
 }
 
 module.exports = sendResetPasswordEmail
-
