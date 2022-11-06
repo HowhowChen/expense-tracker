@@ -54,6 +54,7 @@ app.use((req, res, next) => {
   res.locals.warning_msg = req.flash('warning_msg')
   res.locals.error = req.flash('error')
   res.locals.email = req.flash('email')
+  res.locals.disabled_btn = req.flash('disabled_btn') 
   next()
 })
 

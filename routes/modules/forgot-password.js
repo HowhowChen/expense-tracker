@@ -38,6 +38,7 @@ router.post('/', async (req, res, next) => {
     await sendResetPasswordEmail(user.name, email, link)
 
     req.flash('success_msg', '發送成功!')
+    req.flash('disabled_btn', 'disabled_btn')
     res.redirect('/forgot-password')
   } catch (e) {
     next(e)
