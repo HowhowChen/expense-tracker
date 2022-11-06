@@ -55,6 +55,8 @@
             event.stopPropagation()
             event.preventDefault()
             alert('Form invalid')
+          } else {
+            event.target.disabled = true
           }
         })
       } catch {}
