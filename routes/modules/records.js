@@ -51,7 +51,7 @@ router.get('/:id/edit', async (req, res, next) => {
     const user_id = req.user._id
     const _id = req.params.id
 
-    return Promise.all([
+    await Promise.all([
       Category.find().sort({ _id: 'asc' }).lean(),
       Record.findOne({ _id, user_id }).lean().populate('category_id').lean()
     ])
