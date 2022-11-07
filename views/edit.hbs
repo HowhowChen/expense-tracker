@@ -8,16 +8,11 @@
           </div>
           <h1 class="col-9 text-center text-secondary">
             修改支出
-          </h1>
-          
+          </h1>    
         </div>
-        <div class="mt-3 text-danger text-center">
-          {{#each errors}}
-            {{ this.message }}
-            <br>
-          {{/each}} 
-        </div>
-        
+
+        {{> message}}
+      
         <div class="row align-items-center mb-5 h3">
           <label for="name" class="col-3">名稱<span class="text-danger">*</span>:</label>
           <div class="col-9">
@@ -42,7 +37,7 @@
           <div class="col-9">
             <select id="category" name="category" list="categories" class="form-control"  required>
               {{#each categories}}
-                <option value="{{this.name}}" {{this.selected}}>{{this.name}}</option>
+                <option value="{{this.name}}" {{#ifMatch this.name ../record.category_id.name}}selected{{/ifMatch}}>{{this.name}}</option>
               {{/each}}
             </select>
             <div class="valid-feedback">Good!</div>
@@ -53,7 +48,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="amount" class="col-3">金額<span class="text-danger">*</span>:</label>
           <div class="col-9">
-            <input id="amount" name="amount" type="number" class="form-control" value="{{ record.amount }}" required>
+            <input id="amount" name="amount" type="number" class="form-control" min="0" value="{{ record.amount }}" required>
           </div>
         </div>
 
