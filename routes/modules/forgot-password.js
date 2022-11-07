@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 const sendResetPasswordEmail = require('../../helpers/email-helpers')
 
 // get a forgot-password page
-router.get('/', (req, res) => {
+router.get('/', (_, res) => {
   res.render('forgot-password')
 })
 
@@ -14,34 +14,34 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res, next) => {
   try {
     const { email } = req.body
-    
+    //  欄位必填
     if (!email) {
       req.flash('error', '必填選項!')
       return res.redirect('/forgot-password')
     }
-
+    //  驗證帳戶是否存在
     const user = await User.findOne({ email })
     if (!user) {
       req.flash('error', '帳戶不存在!')
       req.flash('email', email)
       return res.redirect('/forgot-password')
     }
-    // create a one time link valid for 5 minutes
-    const secret = JWT_SECRET + user.password
+    // 建立時效性、防竄改驗證信
+    const secret = JWT_SECRET + user.password //  使用JWT Secret 加上 password 當作secret
     const payload = {
       email,
       id: user._id
     }
-    const token = jwt.sign(payload, secret, { expiresIn: '5m' })
-    const link = `http://${req.headers.host}/forgot-password/reset-password/${user._id}/${token}`
-    //  send email link
-    await sendResetPasswordEmail(user.name, email, link)
+    const token = jwt.sign(payload, secret, { expiresIn: '5m' })  //  生成jwt token 時效5分鐘
+    const link = `http://${req.headers.host}/forgot-password/reset-password/${user._id}/${token}` //  驗證信連結
+  
+    await sendResetPasswordEmail(user.name, email, link)  //  寄送驗證信
 
     req.flash('success_msg', '發送成功!')
     req.flash('disabled_btn', 'disabled_btn')
     res.redirect('/forgot-password')
-  } catch (e) {
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -50,29 +50,29 @@ router.get('/reset-password/:id/:token', async (req, res, next) => {
   try {
     const { id, token } = req.params
     const user = await User.findById(id)
-    if (!user) return next(e)
-    //  authenticate the token
+    if (!user) throw new Error('用戶不存在')  //  authenticate user
+
     const secret = JWT_SECRET + user.password
-    jwt.verify(token, secret)
+
+    jwt.verify(token, secret) // 驗證jwt token
     res.render('reset-password', { id, token })
-  } catch (e) {
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 
 // reset password
-router.post('/reset-password/:id/:token', async (req, res, next) => {
+router.patch('/reset-password/:id/:token', async (req, res, next) => {
   try {
     const { id, token } = req.params
     const { password, confirmPassword } = req.body
     
-    //  authenticate user
     const user = await User.findById(id)
-    if (!user) return next(e)
-   
+    if (!user) throw new Error('用戶不存在')  //  authenticate user
+
     //  authenticate the token
     const secret = JWT_SECRET + user.password
-    jwt.verify(token, secret)
+    jwt.verify(token, secret) //  驗證jwt token
     
     const errors = []
     if (!password || !confirmPassword) {
@@ -84,14 +84,14 @@ router.post('/reset-password/:id/:token', async (req, res, next) => {
     if (errors.length) {
       return res.render('reset-password', { errors, password, confirmPassword, id, token }) 
     }
- 
+
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
     await user.updateOne({ password: hash })
     req.flash('success_msg', '密碼修改成功!')
     res.redirect('/users/login')
-  } catch (e) {
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 

@@ -26,7 +26,7 @@ router.get('/', async (req, res, next) => {
       case 'amountAsc':
         sortObj.amountAsc = 1
         sortOption.amount = 'asc'
-        break 
+        break
       case 'dateDesc':
         sortObj.dateDesc = 1
         sortOption.date = 'desc'
@@ -72,9 +72,8 @@ router.get('/', async (req, res, next) => {
         
         res.render('index', { records, totalAmount, categories, sortObj, pagination: getPagination(limit, page, total, category, sort) })
       })
-  } catch (e) {
-    console.log(e)
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 

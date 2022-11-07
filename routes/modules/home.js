@@ -25,8 +25,8 @@ router.get('/', async (req, res, next) => {
 
         res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total) })
       })
-  } catch (e) {
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 

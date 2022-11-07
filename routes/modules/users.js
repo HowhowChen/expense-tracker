@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
 
 //  get a login page
-router.get('/login', (req, res) => {
+router.get('/login', (_, res) => {
   res.render('login')
 })
 
@@ -23,7 +23,7 @@ router.get('/logout', (req, res) => {
 })
 
 //  get a register page
-router.get('/register', (req, res) => {
+router.get('/register', (_, res) => {
   res.render('register')
 })
 
@@ -69,8 +69,8 @@ router.post('/register', async (req, res, next) => {
       password: hash
     })
     res.redirect('/')
-  } catch (e) {
-    next(e)
+  } catch (err) {
+    next(err)
   }
 })
 
