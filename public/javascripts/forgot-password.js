@@ -1,38 +1,28 @@
 const forgotButton = document.querySelector('#fogot-button')
 const disabledBtn = document.querySelector('#disabled_btn') // 隱藏一個node，用來判斷成功寄出用
-const defaultTime = 30000 // 預設冷卻時間
-let start = Number(JSON.parse(localStorage.getItem('start'))) || null
+const countDownTime = Number(JSON.parse(localStorage.getItem('countDownTime'))) || 30000 // 冷卻時間預設30秒
 const disabledBtnValue = JSON.parse(localStorage.getItem('disabledBtn')) // 用來驗證成功寄出並開始倒數
 
 //  如果成功寄出
 if (disabledBtn) {
   localStorage.setItem('disabledBtn', JSON.stringify(disabledBtn.textContent)) // 用來驗證成功寄出並開始倒數
-  countBackwards()
+  countDown()
 }
 
 // 如果還沒倒數完
 if (disabledBtnValue) {
-  countBackwards()
+  countDown()
 }
 
-function countBackwards() {
+function countDown() {
   forgotButton.disabled = true // 將button鎖上
   requestAnimationFrame(count)
 
   function count(timestamp) {
-    if(start === null) {
-      start = timestamp
-      updateStartAndTimestamp(start, timestamp)
-    }
-    updateStartAndTimestamp(start, timestamp)
-    
-    if(timestamp - start < defaultTime) {
-      // timestamp - start 正數計時
-      timestamp = Number(JSON.parse(localStorage.getItem('timestamp'))) || timestamp
-      start = Number(JSON.parse(localStorage.getItem('start'))) || start
-      const reciprocal = Math.ceil((defaultTime - (timestamp - start)) / 1000) // 倒計時間
+    if(timestamp < countDownTime) {
+      const reciprocal = Math.ceil((countDownTime - timestamp) / 1000) // 倒計時間
       forgotButton.textContent = `再次發送(${reciprocal})`
-      updateStartAndTimestamp(start, timestamp)
+      localStorage.setItem('countDownTime', JSON.stringify(reciprocal * 1000))
 
       requestAnimationFrame(count)
     } else {
@@ -41,9 +31,4 @@ function countBackwards() {
       localStorage.clear()
     }
   }
-}
-// 更新start and timestamp
-function updateStartAndTimestamp(start, timestamp) {
-  localStorage.setItem('start', JSON.stringify(start))
-  localStorage.setItem('timestamp', JSON.stringify(timestamp))
 }
