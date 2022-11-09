@@ -15,24 +15,19 @@ router.get('/', async (req, res, next) => {
 
     const searchOption = {}
     const sortOption = {}
-    const sortObj = {}
 
     //  according to sort value, setting sort condition  
     switch (sort) {
       case 'amountDesc':
-        sortObj.amountDesc = 1
         sortOption.amount = 'desc'
         break
       case 'amountAsc':
-        sortObj.amountAsc = 1
         sortOption.amount = 'asc'
         break
       case 'dateDesc':
-        sortObj.dateDesc = 1
         sortOption.date = 'desc'
         break
       case 'dateAsc':
-        sortObj.dateAsc = 1
         sortOption.date = 'asc'
         break
       default:
@@ -58,19 +53,13 @@ router.get('/', async (req, res, next) => {
       Record.countDocuments(searchOption).lean()
     ])
       .then(([records, categories, totalRecords, total]) => {
-        //  add selected attribute
-        categories.map(categories => {
-          if (categories.name == category) {
-            categories.selected = 'selected'
-          }
-        })
 
         //  setting date format and count totalAmout
         let totalAmount = 0
         totalRecords.forEach(record => totalAmount += Number(record.amount))
         records.forEach(record => record.date = dayjs(record.date).format('YYYY-MM-DD'))
         
-        res.render('index', { records, totalAmount, categories, sortObj, pagination: getPagination(limit, page, total, category, sort) })
+        res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total, category, sort) })
       })
   } catch (err) {
     next(err)
