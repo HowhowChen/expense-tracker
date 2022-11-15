@@ -2,6 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
+const { registorValidator } = require('../../middleware/validatorHandler')
 
 //  get a login page
 router.get('/login', (_, res) => {
@@ -28,31 +29,14 @@ router.get('/register', (_, res) => {
 })
 
 //register: add a new user
-router.post('/register', async (req, res, next) => {
+router.post('/register', registorValidator, async (req, res, next) => {
   try {
     const { name, email, password, confirmPassword } = req.body
-    const errors = []
-    if ( !name || !email || !password || !confirmPassword) {
-      errors.push({ message: '每一項都必填!' })
-    }
-    if (password !== confirmPassword) {
-      errors.push({ message: '密碼與確認密碼不相符' })
-    }
-    if (errors.length) {
-      return res.render('register', {
-        errors,
-        name,
-        email,
-        password,
-        confirmPassword
-      })
-    }
-
     const user = await User.findOne({ email })
+
     if (user) {
-      errors.push({ message: '這個email已註冊過!' })
-      return res.render('register', {
-        errors,
+      return res.status(422).render('register', {
+        error: '這個email已註冊過',
         name,
         email,
         password,

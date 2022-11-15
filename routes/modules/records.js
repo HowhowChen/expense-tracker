@@ -15,11 +15,11 @@ router.post('/new', async (req, res, next) => {
     const { name, date, category, amount } = req.body
     const errors = []
     //  prevent use post request ignore client limit 
-    if (!name || !date || !category || !amount) errors.push({ message: '每一項都必填!' })
+    if (!name || !date || !category || !amount) errors.push({ msg: '每一項都必填!' })
     
     //  驗證amount
-    if (!amountValidator(amount)) errors.push({ message: '金額不接受小數點和負數!' })
-    
+    if (!amountValidator(amount)) errors.push({ msg: '金額不接受小數點和負數!' })
+
     //  if error
     if (errors.length) {
       return res.render('new', {
@@ -72,10 +72,10 @@ router.put('/:id', async (req, res, next) => {
     const { name, date, category, amount } = req.body
     const errors = []
     //  prevent use post request ignore client limit 
-    if (!name || !date || !category || !amount) errors.push({ message: '每一項都必填!' })
+    if (!name || !date || !category || !amount) errors.push({ msg: '每一項都必填!' })
     
     //  驗證amount
-    if (!amountValidator(amount)) errors.push({ message: '金額不接受小數點和負數!' })
+    if (!amountValidator(amount)) errors.push({ msg: '金額不接受小數點和負數!' })
 
     //  if error
     if (errors.length) {
