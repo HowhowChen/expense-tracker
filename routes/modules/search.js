@@ -46,21 +46,19 @@ router.get('/', async (req, res, next) => {
         break
     }
     
-    await Promise.all([
-      Record.find(searchOption).sort(sortOption).limit(limit).skip(offset).populate('category_id').lean(),
-      Category.find().sort({ _id: 'asc' }).lean(),
-      Record.find(searchOption).sort(sortOption).lean(),
-      Record.countDocuments(searchOption).lean()
+    const [records, categories, totalRecords, total] = await Promise.all([
+      Record.find({ user_id }).limit(limit).skip(offset).populate('category_id').lean(),  //  透過limie skip後的分頁資料
+      Category.find().sort({ _id: 'asc' }).lean(),  //  資料庫種類表
+      Record.find({ user_id }).lean(),  //  所有record資料
+      Record.countDocuments({ user_id }).lean() //  record總數量
     ])
-      .then(([records, categories, totalRecords, total]) => {
-
-        //  setting date format and count totalAmout
-        let totalAmount = 0
-        totalRecords.forEach(record => totalAmount += Number(record.amount))
-        records.forEach(record => record.date = dayjs(record.date).format('YYYY-MM-DD'))
-        
-        res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total, category, sort) })
-      })
+    
+    //  setting date format and count totalAmout
+    let totalAmount = 0
+    totalRecords.forEach(record => totalAmount += Number(record.amount))
+    records.forEach(record => record.date = dayjs(record.date).format('YYYY-MM-DD'))
+    
+    res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total, category, sort) })
   } catch (err) {
     next(err)
   }
