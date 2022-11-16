@@ -1,20 +1,22 @@
-const forgotButton = document.querySelector('#fogot-button')
-const disabledBtn = document.querySelector('#disabled_btn') // 隱藏一個node，用來判斷成功寄出用
-const countDownTime = Number(JSON.parse(localStorage.getItem('countDownTime'))) || 30000 // 冷卻時間預設30秒
-const disabledBtnValue = JSON.parse(localStorage.getItem('disabledBtn')) // 用來驗證成功寄出並開始倒數
+try {
+  const forgotButton = document.querySelector('#fogot-button')
+  const disabledBtn = document.querySelector('#disabled_btn') // 隱藏一個node，用來判斷成功寄出用
+  const countDownTime = Number(JSON.parse(localStorage.getItem('countDownTime'))) || 30000 // 冷卻時間預設30秒
+  const disabledBtnValue = JSON.parse(localStorage.getItem('disabledBtn')) // 用來驗證成功寄出並開始倒數
 
-//  如果成功寄出
-if (disabledBtn) {
-  localStorage.setItem('disabledBtn', JSON.stringify(disabledBtn.textContent)) // 用來驗證成功寄出並開始倒數
-  countDown()
-}
+  //  如果成功寄出
+  if (disabledBtn) {
+    localStorage.setItem('disabledBtn', JSON.stringify(disabledBtn.textContent)) // 用來驗證成功寄出並開始倒數
+    countDown(forgotButton, countDownTime)
+  }
 
-// 如果還沒倒數完
-if (disabledBtnValue) {
-  countDown()
-}
+  // 如果還沒倒數完
+  if (disabledBtnValue) {
+    countDown(forgotButton, countDownTime)
+  }
+} catch {}
 
-function countDown() {
+function countDown(forgotButton, countDownTime) {
   forgotButton.disabled = true // 將button鎖上
   requestAnimationFrame(count)
 
