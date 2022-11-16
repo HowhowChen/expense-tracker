@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
-const { amountValidator } = require('../../helpers/validation-helpers')
+const { recordValidator } = require('../../middleware/validatorHandler')
 
 //  get a new record page
 router.get('/new', (_, res) => {
@@ -9,27 +9,10 @@ router.get('/new', (_, res) => {
 })
 
 // create a new record
-router.post('/new', async (req, res, next) => {
+router.post('/new', recordValidator, async (req, res, next) => {
   try {
     const user_id = req.user._id
     const { name, date, category, amount } = req.body
-    const errors = []
-    //  prevent use post request ignore client limit 
-    if (!name || !date || !category || !amount) errors.push({ msg: '每一項都必填!' })
-    
-    //  驗證amount
-    if (!amountValidator(amount)) errors.push({ msg: '金額不接受小數點和負數!' })
-
-    //  if error
-    if (errors.length) {
-      return res.render('new', {
-        errors,
-        name,
-        date,
-        category,
-        amount
-      })
-    }
     
     const categoryData = await Category.findOne({ name: category }).lean()
     await Record.create({
@@ -65,23 +48,11 @@ router.get('/:id/edit', async (req, res, next) => {
 })
 
 //  edit a record
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', recordValidator, async (req, res, next) => {
   try {
     const user_id = req.user._id
     const _id = req.params.id
     const { name, date, category, amount } = req.body
-    const errors = []
-    //  prevent use post request ignore client limit 
-    if (!name || !date || !category || !amount) errors.push({ msg: '每一項都必填!' })
-    
-    //  驗證amount
-    if (!amountValidator(amount)) errors.push({ msg: '金額不接受小數點和負數!' })
-
-    //  if error
-    if (errors.length) {
-      req.flash('errors', errors)
-      return res.redirect(`/records/${_id}/edit`)
-    }
 
     const categoryData = await Category.findOne({ name: category }).lean()
     await Record.findOneAndUpdate({ _id, user_id }, { name, date, category_id: categoryData._id, amount })
