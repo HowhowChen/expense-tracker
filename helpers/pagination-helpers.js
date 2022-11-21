@@ -7,7 +7,7 @@ const DEFAULT_LIMIT = 5
 
 const getOffset = (limit = 10, page = 1) => (page - 1) * limit
 
-const getPagination = (limit = 10, page = 1, total = 50, category = null, sort = null) => {
+const getPagination = (limit = 10, page = 1, total = 50, startDate = null, endDate = null, category = null, sort = null) => {
   const totalPage = Math.ceil(total / limit)
   // const pages = Array.from({ length: totalPage }, (_, index) => index + 1)
   const currentPage = page < 1 ? 1 : page > totalPage ? totalPage : page
@@ -23,7 +23,9 @@ const getPagination = (limit = 10, page = 1, total = 50, category = null, sort =
     next,
     category,
     sort,
-    limit
+    limit,
+    startDate,
+    endDate
   }
 }
 

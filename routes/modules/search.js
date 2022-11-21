@@ -8,6 +8,8 @@ router.get('/', async (req, res, next) => {
   try {
     const user_id = req.user._id
     const { sort } = req.query
+    const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+    const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
     const category = req.query.category || '全部'
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
@@ -46,11 +48,17 @@ router.get('/', async (req, res, next) => {
         break
     }
     
+    //  搜尋條件日期範圍
+    searchOption.date = {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate)
+    }
+
     const [records, categories, totalRecords, total] = await Promise.all([
-      Record.find({ user_id }).limit(limit).skip(offset).populate('category_id').lean(),  //  透過limie skip後的分頁資料
+      Record.find(searchOption).sort(sortOption).limit(limit).skip(offset).populate('category_id').lean(),  //  透過limie skip後的分頁資料
       Category.find().sort({ _id: 'asc' }).lean(),  //  資料庫種類表
-      Record.find({ user_id }).lean(),  //  所有record資料
-      Record.countDocuments({ user_id }).lean() //  record總數量
+      Record.find(searchOption).lean(),  //  所有record資料
+      Record.countDocuments(searchOption).lean() //  record總數量
     ])
     
     //  setting date format and count totalAmout
@@ -58,7 +66,7 @@ router.get('/', async (req, res, next) => {
     totalRecords.forEach(record => totalAmount += Number(record.amount))
     records.forEach(record => record.date = dayjs(record.date).format('YYYY-MM-DD'))
     
-    res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total, category, sort) })
+    res.render('index', { records, totalAmount, categories, pagination: getPagination(limit, page, total, startDate, endDate, category, sort) })
   } catch (err) {
     next(err)
   }
